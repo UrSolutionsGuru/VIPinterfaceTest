@@ -7,6 +7,8 @@
 
   {{> hello}}
   {{> info}}
+  {{> buttons}}
+  {{> readCSV}}
 </body>
 
 <template name="hello">
@@ -22,4 +24,13 @@
     <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
     <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
   </ul>
+</template>
+
+<template name="buttons">
+  <button>33a</button>
+</template>
+
+<template name="readCSV">
+  <input type="file" id="csv-file" name="files"/>
+  <button type="submit" class="btn btn-primary btnReadCsv">Read</button>
 </template>
