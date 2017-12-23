@@ -8,6 +8,7 @@
     "babel-runtime": "^6.26.0",
     "lodash": "^4.17.4",
     "meteor-node-stubs": "^0.3.2",
+    "moment": "^2.20.1",
     "papaparse": "^4.3.6"
   }
 }

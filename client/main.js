@@ -6,6 +6,7 @@ import {Meteor} from "meteor/meteor";
 
 import Papa from 'papaparse';
 import _ from 'lodash';
+import moment from 'moment';
 
 Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
@@ -54,11 +55,35 @@ Template.readCSV.events({
     Papa.parse(template.find('#csv-file').files[0], {
       header: true,
       complete: function(results) {
-        _.each(results.data, function(csvData) {
-          console.log(csvData['Company']);
-          console.log(csvData[results.meta.fields[3]])
+        _.each(results.data, function(csvData, j) {
+          console.log(`line ${j+1}`);
+          _.each(csvData, function(lineData, i) {
+            switch (i) {
+              case 'Company' :
+                if (!_.inRange(lineData,1,999)) console.log (`line ${j+1}: field: ${i} data: ${lineData} - should be a number between 1 and 999`);
+                break;
+              case 'Employee' :
+              case 'Surname' :
+              case 'Known as' :
+              case 'First name' :
+            //    console.log(i);
+             //   console.log(lineData.match(/^[0-9a-zA-Z\s]+$/));
+                if (!lineData.match(/^[0-9a-zA-Z\s]+$/)) console.log (`line ${j+1}: field: ${i} data: ${lineData} - should be alphanumeric`);
+                break;
+              case 'Date of birth' :
+              case 'Date terminated' :
+                let newDate = new moment(lineData);
+                if (newDate == null || !newDate.isValid()) console.log (`line ${j+1}: field: ${i} data: ${lineData} - should be a date`);
+                break;
+              case 'Group' :
+                if (!lineData.match(/^[CAWI]$/)) console.log (`line ${j+1}: field: ${i} data: ${lineData} - unallowed value`);
+                break;
+            }
+          });
+         // console.log(csvData['Company']);
+         // console.log(csvData[results.meta.fields[3]])
         });
-        console.log(results.meta);
+       // console.log(results.meta);
       },
     skipEmptyLines: true,
     });
